@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple Component 1</title>
+  </head>
+  <body>
+    <h1>Example 1</h1>
+    <div id="app"></div>
+    <script>
+      // <div id="app"></div> 찾기
+      const $app = document.querySelector('#app');
+
+      // 초기 상태
+      let state = {
+        items: ['item1', 'item2', 'item3', 'item4'],
+      };
+
+      // 상태가 바뀔 때마다 호출할 render 함수
+      const render = () => {
+        const { items } = state;
+        $app.innerHTML = `
+          <ul>
+            ${items.map((item) => `<li>${item}</li>`).join('')}
+          </ul>
+          <button id="append">추가</button>
+        `;
+        // <button id="append"></button>에 클릭에 반응하는 이벤트 핸들러 추가
+        document.querySelector('#append').addEventListener('click', () => {
+          setState({ items: [...items, `item${items.length + 1}`] });
+        });
+      };
+
+      // 상태를 변화시키는 함수
+      const setState = (newState) => {
+        state = { ...state, ...newState };
+        // 상태가 변하면 다시 render함
+        render();
+      };
+
+      // 초기 render
+      render();
+    </script>
+  </body>
+</html>

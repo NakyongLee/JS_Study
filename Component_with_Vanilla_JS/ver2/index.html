@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple Component 2</title>
+  </head>
+  <body>
+    <h1>Example #2</h1>
+    <div id="app"></div>
+    <script>
+      class Component {
+        $target; // 대상 element 객체
+        $state; // 상태
+
+        constructor($target) {
+          // 객체를 생성하고 초기화하기 위한 특별한 메서드
+          this.$target = $target; // 객체 지정
+          this.setup();
+          this.render();
+        }
+        setup() {} // 상태 설정
+        template() {
+          // 추가할 element 구조
+          return '';
+        }
+        render() {
+          // 렌더링
+          this.$target.innerHTML = this.template();
+          this.setEvent();
+        }
+        setEvent() {} // 이벤트 핸들러
+        setState(newState) {
+          // 상태 update
+          this.$state = { ...this.$state, ...newState };
+          this.render();
+        }
+      }
+
+      class App extends Component {
+        setup() {
+          // 상태 값
+          this.$state = { items: ['item1', 'item2'] };
+        }
+        template() {
+          // 리스트와 아이템 추가를 위한 버튼
+          const { items } = this.$state;
+          return `
+            <ul>
+              ${items.map((item) => `<li>${item}</li>`).join('')}
+            </ul>
+            <button>추가</button>
+          `;
+        }
+
+        setEvent() {
+          this.$target.querySelector('button').addEventListener('click', () => {
+            const { items } = this.$state;
+            this.setState({ items: [...items, `item${items.length + 1}`] });
+          });
+        }
+      }
+
+      new App(document.querySelector('#app'));
+    </script>
+  </body>
+</html>
